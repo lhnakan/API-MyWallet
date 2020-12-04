@@ -9,8 +9,7 @@ async function createByUserId(userId) {
     } else {
         const token = uuidv4();
         try {
-            const result = await database.query(`INSERT INTO sessions ("userId", token) VALUES ($1, $2) RETURNING *`, [userId, token])    
-
+            const result = await database.query(`INSERT INTO sessions ("userId", token) VALUES ($1, $2) RETURNING *`, [userId, token]);
             return result.rows[0];
         } catch(err) {
             return err.detail;
@@ -18,6 +17,26 @@ async function createByUserId(userId) {
     }
 }
 
+async function findByToken(token) {
+    try {
+        const session = await database.query(`SELECT * FROM sessions WHERE token = $1`,[token]);
+      return session.rows[0];
+    } catch(err) {
+        return err.detail;
+    }
+}
+
+async function deleteSession(id) {
+    try {
+        await database.query('DELETE FROM sessions WHERE "userId" = $1',[id]);
+        return 200
+    } catch {
+        return 500;
+    }
+}
+
 module.exports = {
-    createByUserId
+    createByUserId, 
+    findByToken, 
+    deleteSession
 };

@@ -31,10 +31,17 @@ async function checkEmailPassword({ email, password }){
     try {
         const user = await database.query('SELECT * FROM users WHERE email = $1', [email]);
 
-        if(!bcrypt.compareSync(password, user.rows[0].password)){
-            return err;
-        }
+        if(!bcrypt.compareSync(password, user.rows[0].password)) return err;
+        
+        return user.rows[0];
+    } catch(err) {
+        return err;
+    }
+}
 
+async function findById(id) {
+    try {
+        const user = await database.query(`SELECT * FROM users WHERE id = $1`,[id]);
         return user.rows[0];
     } catch(err) {
         return err;
@@ -57,4 +64,5 @@ module.exports = {
     createNewUser,
     checkEmailPassword,
     getUserData,
+    findById
 };
