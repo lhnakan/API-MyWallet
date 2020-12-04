@@ -1,4 +1,4 @@
-require('dotenv').config();
+// require('dotenv').config();
 const express = require("express");
 const cors = require("cors");
 const app = express();
@@ -20,5 +20,10 @@ app.get("/api/transactions", authMiddleware, transactionsController.getTransacti
 app.post("/api/transactions/output", authMiddleware, transactionsController.postOutput);
 app.post("/api/transactions/input", authMiddleware, transactionsController.postInput);
 
+
+
+const port = process.env.PORT;
+
+app.listen(process.env.PORT);
 
 module.exports = app;
