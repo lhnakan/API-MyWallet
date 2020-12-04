@@ -5,16 +5,17 @@ async function createByUserId(userId) {
     const session = await database.query('SELECT * FROM sessions WHERE "userId" = $1', [userId]);
 
     if(session.rows[0]) {
-        return session.rows[0];
-    } else {
-        const token = uuidv4();
-        try {
-            const result = await database.query(`INSERT INTO sessions ("userId", token) VALUES ($1, $2) RETURNING *`, [userId, token]);
-            return result.rows[0];
-        } catch(err) {
-            return err.detail;
-        }     
+        await database.query('DELETE FROM sessions WHERE "userId" = $1',[id]);
     }
+    
+    const token = uuidv4();
+    try {
+        const result = await database.query(`INSERT INTO sessions ("userId", token) VALUES ($1, $2) RETURNING *`, [userId, token]);
+        return result.rows[0];
+    } catch(err) {
+        return err.detail;
+    }     
+    
 }
 
 async function findByToken(token) {
