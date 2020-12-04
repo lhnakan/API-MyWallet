@@ -12,7 +12,7 @@ async function getTransactions(req, res) {
 
 async function postOutput(req, res) { 
     const transactionsParams = req.body;
-    const { item, cost } = transactionsParams
+    const { item, cost, selectDate } = transactionsParams
 
     const { error } = transactionsSchemas.transaction.validate(transactionsParams);
     if (error) return res.status(422).send({ error: error.details[0].message });
@@ -21,7 +21,8 @@ async function postOutput(req, res) {
         item, 
         cost, 
         type: "output",
-        userId: req.user.id
+        userId: req.user.id, 
+        selectDate
     })
 
     res.send(newOutput)
@@ -29,7 +30,7 @@ async function postOutput(req, res) {
 
 async function postInput(req, res) { 
     const transactionsParams = req.body;
-    const { item, cost } = transactionsParams
+    const { item, cost, selectDate } = transactionsParams
 
     const { error } = transactionsSchemas.transaction.validate(transactionsParams);
     if (error) return res.status(422).send({ error: error.details[0].message });
@@ -38,7 +39,8 @@ async function postInput(req, res) {
         item, 
         cost, 
         type: "input",
-        userId: req.user.id
+        userId: req.user.id,
+        selectDate
     })
 
     res.send(newInput)

@@ -30,9 +30,11 @@ async function createNewUser({ email, password, username }){
 async function checkEmailPassword({ email, password }){
     try {
         const user = await database.query('SELECT * FROM users WHERE email = $1', [email]);
-
-        if(!bcrypt.compareSync(password, user.rows[0].password)) return err;
-        
+        if(!user.rows[0]){
+            return '';
+        } else {
+            if(!bcrypt.compareSync(password, user.rows[0].password)) return '';
+        }
         return user.rows[0];
     } catch(err) {
         return err;

@@ -21,9 +21,4 @@ app.post("/api/transactions/output", authMiddleware, transactionsController.post
 app.post("/api/transactions/input", authMiddleware, transactionsController.postInput);
 
 
-
-const port = process.env.PORT;
-
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+module.exports = app;

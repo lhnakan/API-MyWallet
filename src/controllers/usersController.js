@@ -27,6 +27,7 @@ async function postSignIn(req, res) {
     if (error) return res.status(422).send({ error: error.details[0].message })
     
     const user = await usersRepository.checkEmailPassword(userParams);
+    
     if (!user) return res.status(401).send({ error: "Wrong email or password" });
     
     const userId = user.id;
