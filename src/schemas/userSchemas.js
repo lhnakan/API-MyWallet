@@ -14,5 +14,5 @@ const signUp = Joi.object({
 
 module.exports = {
     signIn,
-    signUp
-}; 
+    signUp,
+};

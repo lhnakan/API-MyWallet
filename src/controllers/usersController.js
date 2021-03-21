@@ -16,7 +16,8 @@ async function postSignUp (req, res) {
 
     const user = await usersRepository.createNewUser(userParams);
     const userData = usersRepository.getUserData(user);
-    return res.status(201).send(userData);
+
+    res.status(201).send(userData);
 }
 
 async function postSignIn (req, res) {
@@ -34,11 +35,12 @@ async function postSignIn (req, res) {
 
     const userData = usersRepository.getUserData(user, token);
 
-    return res.send(userData);
+    res.send(userData);
 }
 
 async function postSignOut (req, res) {
     const result = await sessionsRepository.deleteSession(req.user.id);
+
     res.sendStatus(result);
 }
 
