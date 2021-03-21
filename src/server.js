@@ -1,7 +1,8 @@
-const app = require('./app')
+/* eslint-disable no-console */
+const app = require('./app');
 
 const port = process.env.PORT;
 
 app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+    console.log(`Server is running on port ${port}`);
 });
