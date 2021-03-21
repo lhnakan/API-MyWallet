@@ -6,50 +6,25 @@ async function getTransactions (req, res) {
     const userId = req.user.id;
 
     const transactions = await transactionsRepositories.findUserTransactions(userId);
-    if (transactions.length >= 0) return res.status(200).send(transactions);
 
-    res.status(500).send('Erro');
+    res.send(transactions);
 }
 
-// eslint-disable-next-line consistent-return
-async function postOutput (req, res) {
+async function addTransaction (req, res) {
     const transactionsParams = req.body;
-    const { item, cost, selectDate } = transactionsParams;
 
     const { error } = transactionsSchemas.transaction.validate(transactionsParams);
     if (error) return res.status(422).send({ error: error.details[0].message });
 
-    const newOutput = await transactionsRepositories.create({
-        item,
-        cost,
-        type: 'output',
+    const result = await transactionsRepositories.create({
         userId: req.user.id,
-        selectDate,
+        ...transactionsParams,
     });
 
-    res.send(newOutput);
-}
-
-async function postInput (req, res) {
-    const transactionsParams = req.body;
-    const { item, cost, selectDate } = transactionsParams;
-
-    const { error } = transactionsSchemas.transaction.validate(transactionsParams);
-    if (error) return res.status(422).send({ error: error.details[0].message });
-
-    const newInput = await transactionsRepositories.create({
-        item,
-        cost,
-        type: 'input',
-        userId: req.user.id,
-        selectDate,
-    });
-
-    res.send(newInput);
+    res.status(201).send(result);
 }
 
 module.exports = {
     getTransactions,
-    postOutput,
-    postInput,
+    addTransaction,
 };
